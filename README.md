@@ -1,2 +1,3 @@
 # todo-list-app
-Aplicación simple
+
+Aplicación de base para recordar codificación con Swift
