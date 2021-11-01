@@ -19,7 +19,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         FirebaseApp.configure()
         
-        let navigationController = UINavigationController(rootViewController: ViewController())
+        let auth = Auth.auth()
+        
+        let navigationController = UINavigationController(rootViewController: WelcomeViewController())
         navigationController.navigationBar.prefersLargeTitles = true
         window.rootViewController = navigationController
         window.makeKeyAndVisible()

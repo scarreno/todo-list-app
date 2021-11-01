@@ -5,5 +5,6 @@ target 'todo-list-app' do
   use_frameworks!
 
 pod 'Firebase/Analytics'
+pod 'Firebase/Auth'
 
 end

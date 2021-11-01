@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class HomeController: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
     var todoListItems: [String] = []
     
