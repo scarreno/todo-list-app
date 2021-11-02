@@ -106,8 +106,10 @@ class SignUpViewController : UIViewController {
     
     @objc func signUpPressed(sender: UIButton){
         
-        present(LoadScreenViewController(), animated: true, completion: nil)
-        //Auth.auth().createUser(withEmail: emailTextField.text!, password: passTextField.text!) { authResult, error in
-        //}
+        if let email = emailTextField.text, let password = passTextField.text, let passConfirmation = passConfirmationTextField.text {
+            Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+                
+            }
+        }
     }
 }

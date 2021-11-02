@@ -17,12 +17,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let window = UIWindow(frame: UIScreen.main.bounds)
         
+        let navigationController: UINavigationController
+        
         FirebaseApp.configure()
-        
         let auth = Auth.auth()
+                
+        if(auth.currentUser == nil){
+            navigationController = UINavigationController(rootViewController: WelcomeViewController())
+            navigationController.navigationBar.prefersLargeTitles = true
+        }else {
+            navigationController = UINavigationController(rootViewController: HomeViewController())
+            navigationController.navigationBar.prefersLargeTitles = true
+        }
         
-        let navigationController = UINavigationController(rootViewController: WelcomeViewController())
-        navigationController.navigationBar.prefersLargeTitles = true
+        
+        
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
         self.window = window

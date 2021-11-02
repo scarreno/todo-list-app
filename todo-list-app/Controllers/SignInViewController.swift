@@ -6,17 +6,20 @@
 //
 
 import UIKit
+import FirebaseAuth
+
 
 class SignInViewController : UIViewController {
     
     
-    let userTextField: UITextField = {
+    let emailTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Usuario"
         tf.borderStyle = .roundedRect
         tf.layer.cornerRadius = 6
         tf.backgroundColor = .white
         tf.translatesAutoresizingMaskIntoConstraints = false
+        tf.autocapitalizationType = .none
         return tf
     }()
     
@@ -28,6 +31,7 @@ class SignInViewController : UIViewController {
         tf.layer.cornerRadius = 6
         tf.backgroundColor = .white
         tf.translatesAutoresizingMaskIntoConstraints = false
+        tf.autocapitalizationType = .none
         return tf
     }()
     
@@ -49,19 +53,19 @@ class SignInViewController : UIViewController {
         title = "Sign In"
         
         self.view.backgroundColor = .systemBackground
-        self.view.addSubview(userTextField)
+        self.view.addSubview(emailTextField)
         self.view.addSubview(passTextField)
         self.view.addSubview(signInButton)
         
         NSLayoutConstraint.activate([
-            userTextField.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            userTextField.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -60),
-            userTextField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20),
-            userTextField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20),
-            userTextField.heightAnchor.constraint(equalToConstant: 40),
+            emailTextField.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            emailTextField.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -60),
+            emailTextField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20),
+            emailTextField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20),
+            emailTextField.heightAnchor.constraint(equalToConstant: 40),
             
             passTextField.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            passTextField.topAnchor.constraint(equalTo: userTextField.bottomAnchor, constant: 20),
+            passTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 20),
             passTextField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20),
             passTextField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20),
             passTextField.heightAnchor.constraint(equalToConstant: 40),
@@ -75,6 +79,14 @@ class SignInViewController : UIViewController {
     }
     
     @objc func signInPressed(){
+        
+        if let email = emailTextField.text , let password = passTextField.text {
+            Auth.auth().signIn(withEmail: email, password: password) { [weak self]AuthDataResult, error in
+                print("Signed!!!!!")
+                
+                self?.navigationController?.pushViewController(HomeViewController(), animated: true)
+            }
+        }
         
     }
 }
