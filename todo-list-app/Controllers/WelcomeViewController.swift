@@ -69,11 +69,11 @@ class WelcomeViewController: UIViewController {
     }
     
     @objc func signInPressed(sender :UIButton){
-        navigationController?.pushViewController(SignInController(), animated: true)
+        navigationController?.pushViewController(SignInViewController(), animated: true)
     }
     
     @objc func signUpPressed(sender :UIButton){
-        navigationController?.pushViewController(SignInController(), animated: true)
+        navigationController?.pushViewController(SignUpViewController(), animated: true)
     }
     
 }

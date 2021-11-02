@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SignInController : UIViewController {
+class SignInViewController : UIViewController {
     
     
     let userTextField: UITextField = {
@@ -35,7 +35,7 @@ class SignInController : UIViewController {
        let btn = UIButton()
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.setTitle("Login", for: .normal)
-        btn.backgroundColor = .lightGray
+        btn.backgroundColor = UIColor(red: 0.00, green: 0.55, blue: 0.01, alpha: 1.00)
         btn.tintColor = .black
         btn.layer.cornerRadius = 6
         btn.addTarget(self, action: #selector(signInPressed), for: .touchUpInside)
