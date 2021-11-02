@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -15,8 +16,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         let window = UIWindow(windowScene: windowScene)
-        let navigationController = UINavigationController(rootViewController: ViewController())
-        navigationController.navigationBar.prefersLargeTitles = true
+        let navigationController: UINavigationController
+        
+        let auth = Auth.auth()
+                
+        if(auth.currentUser == nil){
+            navigationController = UINavigationController(rootViewController: WelcomeViewController())
+            navigationController.navigationBar.prefersLargeTitles = true
+        }else {
+            navigationController = UINavigationController(rootViewController: HomeViewController())
+            navigationController.navigationBar.prefersLargeTitles = true
+        }
+        
+        
+        
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
         self.window = window
