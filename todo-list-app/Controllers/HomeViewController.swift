@@ -6,10 +6,22 @@
 //
 
 import UIKit
+import FirebaseDatabase
+import FirebaseAuth
 
+struct Task {
+    var id: String?
+    var task: String?
+    var isDone: Bool?
+    var registerDate: String?
+    
+}
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
-    var todoListItems: [String] = []
+    var database = Database.database().reference()
+    let currentUser = Auth.auth().currentUser;
+    
+    var todoListItems: [Task] = []
     
     let tableView: UITableView = {
     let tv = UITableView()
@@ -24,10 +36,37 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         title = "Todo List"
         view.backgroundColor = .systemBackground
-        
+        setupData()
         setupTableView()
         navigationItem.largeTitleDisplayMode = .always
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "+", style: .done, target: self, action: #selector(rightButtonTapped))
+    }
+    
+    func setupData(){
+        if let uid = self.currentUser?.uid {
+            database.child(uid).getData { error, snapshot in
+                guard error == nil else {
+                   print(error!.localizedDescription)
+                   return;
+                 }
+                
+                if let dictionary = snapshot.value as? [String: AnyObject] {
+
+                    print(dictionary)
+                            var task = Task()
+
+                    
+                            task.id = snapshot.key
+                            //task.setValuesForKeys(dictionary)
+                            self.todoListItems.append(task)
+                        }
+         
+                
+                print("llego la data")
+
+            }
+        }
+        
     }
     
     func setupTableView(){
@@ -54,8 +93,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cellId", for: indexPath) as! ItemCell
         cell.backgroundColor = .systemBackground
-        let item = todoListItems[indexPath.row]
-        cell.titleLabel.text = item
+        let taskItem = todoListItems[indexPath.row] as Task
+        cell.titleLabel.text = taskItem.task
         return cell
     }
     
@@ -84,8 +123,16 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             guard let newItem = textField.text else {
                     return
                 }
-            self.todoListItems.append(newItem)
-            self.tableView.reloadData()
+            
+            if let uid = self.currentUser?.uid {
+                let newTask = Task(task: newItem, isDone: false, registerDate: Date().formatted())
+                
+                self.database.child("users").child(uid).child("task\(Int.random(in: 0..<10000))")
+                    .setValue([newTask])
+                
+                self.todoListItems.append(newTask)
+                self.tableView.reloadData()
+            }
         }
         
         alert.addAction(action)

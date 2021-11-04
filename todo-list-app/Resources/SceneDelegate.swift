@@ -18,17 +18,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         let navigationController: UINavigationController
         
-        let auth = Auth.auth()
+        let appViewmodel = AppViewModel()
                 
-        if(auth.currentUser == nil){
+        if(!appViewmodel.isSignedIn){
             navigationController = UINavigationController(rootViewController: WelcomeViewController())
             navigationController.navigationBar.prefersLargeTitles = true
         }else {
             navigationController = UINavigationController(rootViewController: HomeViewController())
             navigationController.navigationBar.prefersLargeTitles = true
         }
-        
-        
         
         window.rootViewController = navigationController
         window.makeKeyAndVisible()

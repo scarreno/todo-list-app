@@ -6,5 +6,7 @@ target 'todo-list-app' do
 
 pod 'Firebase/Analytics'
 pod 'Firebase/Auth'
+pod 'Firebase/Database'
+ 
 
 end
