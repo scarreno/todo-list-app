@@ -10,12 +10,13 @@ import FirebaseDatabase
 import FirebaseAuth
 
 struct Task {
-    var id: String?
-    var task: String?
-    var isDone: Bool?
-    var registerDate: String?
+    var id: String
+    var task: String
+    var isDone: Bool
+    var registerDate: String
     
 }
+
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
     var database = Database.database().reference()
@@ -44,29 +45,23 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func setupData(){
         if let uid = self.currentUser?.uid {
-            database.child(uid).getData { error, snapshot in
+            database.child("users").child(uid).getData { error, snapshot in
                 guard error == nil else {
                    print(error!.localizedDescription)
                    return;
                  }
-                
+
                 if let dictionary = snapshot.value as? [String: AnyObject] {
-
-                    print(dictionary)
-                            var task = Task()
-
                     
-                            task.id = snapshot.key
-                            //task.setValuesForKeys(dictionary)
-                            self.todoListItems.append(task)
-                        }
-         
-                
-                print("llego la data")
-
+                    for taskItem in dictionary {
+                        let task = Task(id: taskItem.key, task: taskItem.value["task"] as! String, isDone: (taskItem.value["isDone"] as! Bool), registerDate: taskItem.value["registerDate"] as! String)
+                        self.todoListItems.append(task)
+                    }
+                    self.tableView.reloadData()
+                    print(dictionary)
+                }
             }
         }
-        
     }
     
     func setupTableView(){
@@ -86,7 +81,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         return todoListItems.count
     }
     
@@ -125,11 +119,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                 }
             
             if let uid = self.currentUser?.uid {
-                let newTask = Task(task: newItem, isDone: false, registerDate: Date().formatted())
-                
-                self.database.child("users").child(uid).child("task\(Int.random(in: 0..<10000))")
-                    .setValue([newTask])
-                
+                let taskId = "task\(Int.random(in: 0..<10000))"
+                let newTask = Task(id: taskId, task: newItem, isDone: false, registerDate: Date().formatted())
+                print(newTask)
+                self.database.child("users").child(uid).child(taskId).setValue([newTask])                
                 self.todoListItems.append(newTask)
                 self.tableView.reloadData()
             }
