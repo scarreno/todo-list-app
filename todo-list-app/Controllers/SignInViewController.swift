@@ -11,7 +11,7 @@ import FirebaseAuth
 
 class SignInViewController : UIViewController {
     
-    
+    let appViewmodel = AppViewModel()
     let emailTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Usuario"
@@ -78,12 +78,10 @@ class SignInViewController : UIViewController {
         ])
     }
     
-    @objc func signInPressed(){
-        
+    @objc func signInPressed(){        
         if let email = emailTextField.text , let password = passTextField.text {
             Auth.auth().signIn(withEmail: email, password: password) { [weak self]AuthDataResult, error in
                 print("Signed!!!!!")
-                
                 self?.navigationController?.pushViewController(HomeViewController(), animated: true)
             }
         }

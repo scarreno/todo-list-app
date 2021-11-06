@@ -20,12 +20,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let navigationController: UINavigationController
         
         FirebaseApp.configure()
-        let auth = Auth.auth()
+        let appViewmodel = AppViewModel()
                 
-        if(auth.currentUser == nil){
+        if(!appViewmodel.isSignedIn){
             navigationController = UINavigationController(rootViewController: WelcomeViewController())
             navigationController.navigationBar.prefersLargeTitles = true
-        }else {
+        } else {
             navigationController = UINavigationController(rootViewController: HomeViewController())
             navigationController.navigationBar.prefersLargeTitles = true
         }
