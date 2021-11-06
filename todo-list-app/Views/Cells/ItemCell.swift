@@ -21,17 +21,29 @@ class  ItemCell: UITableViewCell{
     
     let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Hola Mundo"
         label.textColor = .white
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .left
+        label.backgroundColor = .clear
+        label.numberOfLines = 2
+        label.sizeToFit()
         return label
         
     }()
     
+    let dateLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .white
+        label.font = UIFont.boldSystemFont(ofSize: 12)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .right
+        label.backgroundColor = .clear
+        return label
+    }()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
         setupView()
     }
     
@@ -41,7 +53,9 @@ class  ItemCell: UITableViewCell{
     
     func setupView(){
         addSubview(cellView)
+        
         cellView.addSubview(titleLabel)
+        cellView.addSubview(dateLabel)
         self.selectionStyle = .none
         
         NSLayoutConstraint.activate([
@@ -51,9 +65,14 @@ class  ItemCell: UITableViewCell{
             cellView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
         ])
         
-        titleLabel.heightAnchor.constraint(equalToConstant: 200).isActive = true
-        titleLabel.widthAnchor.constraint(equalToConstant: 200).isActive = true
-        titleLabel.centerYAnchor.constraint(equalTo: cellView.centerYAnchor).isActive = true
+        titleLabel.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: cellView.topAnchor, constant: 10).isActive = true
         titleLabel.leftAnchor.constraint(equalTo: cellView.leftAnchor, constant: 20).isActive = true
+        titleLabel.rightAnchor.constraint(equalTo: cellView.rightAnchor, constant: -20).isActive = true
+        
+        dateLabel.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        dateLabel.rightAnchor.constraint(equalTo: cellView.rightAnchor, constant: -20).isActive = true
+        dateLabel.bottomAnchor.constraint(equalTo: cellView.bottomAnchor, constant: -5).isActive = true
+        dateLabel.widthAnchor.constraint(equalToConstant: 150).isActive = true
     }
 }

@@ -20,14 +20,15 @@ extension Encodable {
 
 struct Task : Encodable {
     let id: String
-    let task: String
-    let isDone: String
-    let registerDate: String
+    let title: String
+    let description: String
+    var isDone: Bool
+    let registeredDate: Int64
+    let modificationDate: Int64?
     
     private enum CodingKeys: String, CodingKey {
-           case task, isDone, registerDate
+           case title, description, isDone, registeredDate, modificationDate
        }
-    
 }
 
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -52,8 +53,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         view.backgroundColor = .systemBackground
         setupData()
         setupTableView()
-        navigationItem.largeTitleDisplayMode = .always
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "+", style: .done, target: self, action: #selector(rightButtonTapped))
+        
+        navigationItem.largeTitleDisplayMode = .automatic
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "icons8-add-100"), style: .plain, target: self, action: #selector(rightButtonTapped))
     }
     
     func setupData(){
@@ -65,13 +67,15 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                  }
 
                 if let dictionary = snapshot.value as? [String: AnyObject] {
-                    
-                    for taskItem in dictionary {
-                        let task = Task(id: taskItem.key, task: taskItem.value["task"] as! String, isDone: (taskItem.value["isDone"] as! String), registerDate: taskItem.value["registerDate"] as! String)
+                    for taskItem in  dictionary {
+                        let task = Task(id: taskItem.key, title: taskItem.value["title"] as! String, description: taskItem.value["description"] as! String, isDone: taskItem.value["isDone"] as! Bool, registeredDate: taskItem.value["registeredDate"] as! Int64, modificationDate:  taskItem.value["modificationDate"] as? Int64)
+                        
                         self.todoListItems.append(task)
                     }
+                    self.todoListItems = self.todoListItems.filter({ item in
+                        item.isDone == false
+                    }).sorted(by: { $0.registeredDate > $1.registeredDate })
                     self.tableView.reloadData()
-                    print(dictionary)
                 }
             }
         }
@@ -101,18 +105,28 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         let cell = tableView.dequeueReusableCell(withIdentifier: "cellId", for: indexPath) as! ItemCell
         cell.backgroundColor = .systemBackground
         let taskItem = todoListItems[indexPath.row] as Task
-        cell.titleLabel.text = taskItem.task
+        cell.titleLabel.text = taskItem.title
+        
+        let regDate = Date(timeIntervalSince1970: TimeInterval(taskItem.registeredDate))
+        cell.dateLabel.text = regDate.formatted()
         return cell
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if(editingStyle == .delete){
-            todoListItems.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
+            
+            if let uid = self.currentUser?.uid, var task = self.todoListItems[indexPath.row] as? Task {
+                task.isDone = true
+                database.child("users").child(uid).child(task.id).updateChildValues(task.toDictionnary!)
+                todoListItems.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .fade)
+            }
         }else if editingStyle == .insert{
             
         }
     }
+    
+    
        
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
@@ -130,16 +144,18 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             guard let newItem = textField.text else {
                     return
                 }
+            if(newItem == ""){
+                return
+            }
             
             if let uid = self.currentUser?.uid {
                 let taskId = "task\(Int.random(in: 0..<10000))"
-                let newTask = Task(id: taskId, task: newItem, isDone: "false", registerDate: Date().formatted())
-                print(newTask)
+                let newTask = Task(id: taskId, title: newItem, description: "", isDone: false, registeredDate: Int64(Date().timeIntervalSince1970), modificationDate: nil)
                 
-               
                 self.database.child("users").child(uid).child(taskId).setValue(newTask.toDictionnary)
-                
                 self.todoListItems.append(newTask)
+                
+                self.todoListItems = self.todoListItems.sorted(by: { $0.registeredDate > $1.registeredDate })
                 self.tableView.reloadData()
             }
         }
