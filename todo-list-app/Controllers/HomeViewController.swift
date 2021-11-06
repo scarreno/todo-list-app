@@ -33,6 +33,9 @@ struct Task : Encodable {
 
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
+    var rightAnchorConstraint: NSLayoutConstraint?
+    
+    var isSlideMenuPresented = false
     var database = Database.database().reference()
     let currentUser = Auth.auth().currentUser;
     
@@ -45,17 +48,34 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         return tv
     }()
     
+    lazy var menuBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "sidebar.leading")?.withRenderingMode(.alwaysOriginal), style: .done, target: self, action: #selector(menuBarButtonTapped))
+    
+    lazy var menuView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .systemGray
+        return view
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         
-        title = "Todo List"
+        title = "Pendientes"
         view.backgroundColor = .systemBackground
         setupData()
         setupTableView()
         
         navigationItem.largeTitleDisplayMode = .automatic
+        navigationItem.setLeftBarButton(menuBarButtonItem, animated: true)
+        
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "icons8-add-100"), style: .plain, target: self, action: #selector(rightButtonTapped))
+        
+        let constant = view.frame.width * -1
+        menuView.pinMenuTo(view: view)
+        
+        rightAnchorConstraint = NSLayoutConstraint(item: menuView, attribute: NSLayoutConstraint.Attribute.right, relatedBy: NSLayoutConstraint.Relation.equal, toItem: view, attribute: NSLayoutConstraint.Attribute.right, multiplier: 1, constant: constant)
+        
+        view.addConstraint(rightAnchorConstraint!)
+        
     }
     
     func setupData(){
@@ -87,7 +107,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.dataSource = self
         tableView.delegate = self
         
-        view.addSubview(tableView)
+        tableView.edgeTo(view: view)
+        //view.addSubview(tableView)
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0),
@@ -125,13 +146,29 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             
         }
     }
-    
-    
        
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }
+    
+    @objc func menuBarButtonTapped(_ sender: UIButton?){
+        print("tapped left")
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut) {
+            
+            var slideMenuInPadding: CGFloat = self.isSlideMenuPresented ? self.view.frame.width * 0.30 * -1 : self.view.frame.width * -1
+                         
+            print(slideMenuInPadding)
+            self.rightAnchorConstraint?.constant = slideMenuInPadding
+            
+        } completion: { (finished) in
+            print("Animation finished: \(finished)")
+            self.isSlideMenuPresented.toggle()
+        }
+
+    }
+    
     @objc func rightButtonTapped(_ sender: UIButton?) {
+        print("tapped right")
            var textField = UITextField()
         
         let alert = UIAlertController(title: "Ingresa una tarea", message: "", preferredStyle: .alert)
@@ -147,7 +184,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             if(newItem == ""){
                 return
             }
-            
             if let uid = self.currentUser?.uid {
                 let taskId = "task\(Int.random(in: 0..<10000))"
                 let newTask = Task(id: taskId, title: newItem, description: "", isDone: false, registeredDate: Int64(Date().timeIntervalSince1970), modificationDate: nil)
@@ -159,9 +195,26 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                 self.tableView.reloadData()
             }
         }
-        
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
        }
 }
 
+public extension UIView {
+    func edgeTo(view: UIView)  {
+        view.addSubview(self)
+        translatesAutoresizingMaskIntoConstraints = false
+        topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    }
+    
+    func pinMenuTo(view: UIView){
+        view.addSubview(self)
+        translatesAutoresizingMaskIntoConstraints = false
+        topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    }
+}
