@@ -9,11 +9,24 @@ import UIKit
 import FirebaseDatabase
 import FirebaseAuth
 
-struct Task {
-    var id: String
-    var task: String
-    var isDone: Bool
-    var registerDate: String
+extension Encodable {
+    var toDictionnary: [String : Any]? {
+        guard let data =  try? JSONEncoder().encode(self) else {
+            return nil
+        }
+        return try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any]
+    }
+}
+
+struct Task : Encodable {
+    let id: String
+    let task: String
+    let isDone: String
+    let registerDate: String
+    
+    private enum CodingKeys: String, CodingKey {
+           case task, isDone, registerDate
+       }
     
 }
 
@@ -54,7 +67,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                 if let dictionary = snapshot.value as? [String: AnyObject] {
                     
                     for taskItem in dictionary {
-                        let task = Task(id: taskItem.key, task: taskItem.value["task"] as! String, isDone: (taskItem.value["isDone"] as! Bool), registerDate: taskItem.value["registerDate"] as! String)
+                        let task = Task(id: taskItem.key, task: taskItem.value["task"] as! String, isDone: (taskItem.value["isDone"] as! String), registerDate: taskItem.value["registerDate"] as! String)
                         self.todoListItems.append(task)
                     }
                     self.tableView.reloadData()
@@ -120,9 +133,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             
             if let uid = self.currentUser?.uid {
                 let taskId = "task\(Int.random(in: 0..<10000))"
-                let newTask = Task(id: taskId, task: newItem, isDone: false, registerDate: Date().formatted())
+                let newTask = Task(id: taskId, task: newItem, isDone: "false", registerDate: Date().formatted())
                 print(newTask)
-                self.database.child("users").child(uid).child(taskId).setValue([newTask])                
+                
+               
+                self.database.child("users").child(uid).child(taskId).setValue(newTask.toDictionnary)
+                
                 self.todoListItems.append(newTask)
                 self.tableView.reloadData()
             }
