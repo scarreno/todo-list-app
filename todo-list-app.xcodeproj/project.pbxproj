@@ -8,11 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		375581A957D24F19344724B1 /* Pods_todo_list_app.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 10D09FB554A41416086BF21C /* Pods_todo_list_app.framework */; };
+		703818C927448BF7009F8D7B /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703818C827448BF7009F8D7B /* ContainerViewController.swift */; };
+		703818CB27448D3A009F8D7B /* Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703818CA27448D3A009F8D7B /* Protocol.swift */; };
 		7049D7A5272F89BA00E46CE5 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7049D7A4272F89BA00E46CE5 /* SignInViewController.swift */; };
 		7049D7A7272F8D5300E46CE5 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7049D7A6272F8D5300E46CE5 /* WelcomeViewController.swift */; };
 		7049D7A92730C6EA00E46CE5 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7049D7A82730C6EA00E46CE5 /* SignUpViewController.swift */; };
 		7049D7AE2730CE8000E46CE5 /* LoadScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7049D7AD2730CE8000E46CE5 /* LoadScreenViewController.swift */; };
 		7049D7B12731CF2E00E46CE5 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7049D7B02731CF2E00E46CE5 /* AppViewModel.swift */; };
+		7049D7B32744829A00E46CE5 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7049D7B22744829A00E46CE5 /* MenuViewController.swift */; };
 		7060A2532729FCD50012AC8A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7060A2522729FCD50012AC8A /* GoogleService-Info.plist */; };
 		70874A38272799B000658186 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70874A37272799B000658186 /* AppDelegate.swift */; };
 		70874A3A272799B000658186 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70874A39272799B000658186 /* SceneDelegate.swift */; };
@@ -45,11 +48,14 @@
 /* Begin PBXFileReference section */
 		10D09FB554A41416086BF21C /* Pods_todo_list_app.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_todo_list_app.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F11F567CF8C6211B65EE125 /* Pods-todo-list-app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-todo-list-app.release.xcconfig"; path = "Target Support Files/Pods-todo-list-app/Pods-todo-list-app.release.xcconfig"; sourceTree = "<group>"; };
+		703818C827448BF7009F8D7B /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
+		703818CA27448D3A009F8D7B /* Protocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocol.swift; sourceTree = "<group>"; };
 		7049D7A4272F89BA00E46CE5 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		7049D7A6272F8D5300E46CE5 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		7049D7A82730C6EA00E46CE5 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		7049D7AD2730CE8000E46CE5 /* LoadScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadScreenViewController.swift; sourceTree = "<group>"; };
 		7049D7B02731CF2E00E46CE5 /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
+		7049D7B22744829A00E46CE5 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		7060A2522729FCD50012AC8A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		70874A34272799B000658186 /* todo-list-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "todo-list-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		70874A37272799B000658186 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -168,6 +174,7 @@
 				70874A39272799B000658186 /* SceneDelegate.swift */,
 				70874A40272799B200658186 /* Assets.xcassets */,
 				70874A37272799B000658186 /* AppDelegate.swift */,
+				703818CA27448D3A009F8D7B /* Protocol.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -180,6 +187,8 @@
 				7049D7A6272F8D5300E46CE5 /* WelcomeViewController.swift */,
 				7049D7A82730C6EA00E46CE5 /* SignUpViewController.swift */,
 				7049D7AD2730CE8000E46CE5 /* LoadScreenViewController.swift */,
+				7049D7B22744829A00E46CE5 /* MenuViewController.swift */,
+				703818C827448BF7009F8D7B /* ContainerViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -385,7 +394,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				7049D7AE2730CE8000E46CE5 /* LoadScreenViewController.swift in Sources */,
+				7049D7B32744829A00E46CE5 /* MenuViewController.swift in Sources */,
 				70BC2B5F2728D2AB0026C506 /* ItemCell.swift in Sources */,
+				703818C927448BF7009F8D7B /* ContainerViewController.swift in Sources */,
 				70874A3C272799B000658186 /* HomeViewController.swift in Sources */,
 				7049D7A92730C6EA00E46CE5 /* SignUpViewController.swift in Sources */,
 				70874A38272799B000658186 /* AppDelegate.swift in Sources */,
@@ -393,6 +404,7 @@
 				7049D7A5272F89BA00E46CE5 /* SignInViewController.swift in Sources */,
 				70874A3A272799B000658186 /* SceneDelegate.swift in Sources */,
 				7049D7B12731CF2E00E46CE5 /* AppViewModel.swift in Sources */,
+				703818CB27448D3A009F8D7B /* Protocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -21,14 +21,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let appViewmodel = AppViewModel()
                 
         if(!appViewmodel.isSignedIn){
+            let navigationController: UINavigationController
             navigationController = UINavigationController(rootViewController: WelcomeViewController())
             navigationController.navigationBar.prefersLargeTitles = true
-        }else {
-            navigationController = UINavigationController(rootViewController: HomeViewController())
-            navigationController.navigationBar.prefersLargeTitles = true
+            window.rootViewController = navigationController
+        } else {
+            window.rootViewController = ContainerViewController()
         }
         
-        window.rootViewController = navigationController
         window.makeKeyAndVisible()
         self.window = window
     }

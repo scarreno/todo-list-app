@@ -33,6 +33,7 @@ struct Task : Encodable {
 
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
+    var delegate: HomeControllerDelegate?
     var rightAnchorConstraint: NSLayoutConstraint?
     
     var isSlideMenuPresented = false
@@ -48,7 +49,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         return tv
     }()
     
-    lazy var menuBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "sidebar.leading")?.withRenderingMode(.alwaysOriginal), style: .done, target: self, action: #selector(menuBarButtonTapped))
+    lazy var menuBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "sidebar.leading")?.withRenderingMode(.alwaysOriginal), style: .done, target: self, action: #selector(handleMenuToggle))
     
     lazy var menuView: UIView = {
         let view = UIView()
@@ -56,15 +57,23 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         return view
     }()
     
+    @objc func handleMenuToggle(){
+        print("left ")
+        delegate?.handleMenuToggle()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "Pendientes"
+        navigationController?.navigationBar.barTintColor = .darkGray
+        navigationController?.navigationBar.barStyle = .black
+        
         view.backgroundColor = .systemBackground
         setupData()
         setupTableView()
         
-        navigationItem.largeTitleDisplayMode = .automatic
+        navigationItem.title = "Pendientes"
+        navigationItem.largeTitleDisplayMode = .never
         navigationItem.setLeftBarButton(menuBarButtonItem, animated: true)
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "icons8-add-100"), style: .plain, target: self, action: #selector(rightButtonTapped))
@@ -152,10 +161,13 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     @objc func menuBarButtonTapped(_ sender: UIButton?){
+        
+        present(MenuViewController(), animated: true, completion: nil)
+        /*
         print("tapped left")
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut) {
+        UIView.animate(withDuration: 0.8, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut) {
             
-            var slideMenuInPadding: CGFloat = self.isSlideMenuPresented ? self.view.frame.width * 0.30 * -1 : self.view.frame.width * -1
+            var slideMenuInPadding: CGFloat = !self.isSlideMenuPresented ? self.view.frame.width * 0.30 * -1 : self.view.frame.width * -1
                          
             print(slideMenuInPadding)
             self.rightAnchorConstraint?.constant = slideMenuInPadding
@@ -164,6 +176,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             print("Animation finished: \(finished)")
             self.isSlideMenuPresented.toggle()
         }
+         */
 
     }
     
