@@ -6,10 +6,11 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class ContainerViewController : UIViewController {
     
-    var menuViewController: UIViewController!
+    var menuViewController: MenuViewController!
     var centercontroller: UIViewController!
     var isExpanded = false
     
@@ -36,6 +37,7 @@ class ContainerViewController : UIViewController {
     func configureMenuViewController(){
         if menuViewController == nil {
             menuViewController = MenuViewController()
+            menuViewController.delegate = self
             view.insertSubview(menuViewController.view, at: 0)
             addChild(menuViewController)
             menuViewController.didMove(toParent: self)
@@ -46,7 +48,7 @@ class ContainerViewController : UIViewController {
         if shouldExpand {
             //show
             UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
-                self.centercontroller.view.frame.origin.x = self.centercontroller.view.frame.width - 80
+                self.centercontroller.view.frame.origin.x = self.centercontroller.view.frame.width - (self.centercontroller.view.frame.width * 0.3)
             }, completion: nil)
         }else {
             UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
@@ -64,5 +66,17 @@ extension ContainerViewController : HomeControllerDelegate {
         }
         isExpanded = !isExpanded
         showMenuController(shouldExpand: isExpanded)
+    }
+    
+    func handleSignOut(){
+        do{
+            print("Signout!")
+            try Auth.auth().signOut()
+            self.handleMenuToggle()
+            navigationController?.pushViewController(SignInViewController(), animated: true)
+        }catch{
+            print("Error while signing out!")
+        }
+        
     }
 }

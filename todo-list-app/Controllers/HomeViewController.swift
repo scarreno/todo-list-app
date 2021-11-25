@@ -58,7 +58,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }()
     
     @objc func handleMenuToggle(){
-        print("left ")
         delegate?.handleMenuToggle()
     }
     
@@ -158,26 +157,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
        
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
-    }
-    
-    @objc func menuBarButtonTapped(_ sender: UIButton?){
-        
-        present(MenuViewController(), animated: true, completion: nil)
-        /*
-        print("tapped left")
-        UIView.animate(withDuration: 0.8, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut) {
-            
-            var slideMenuInPadding: CGFloat = !self.isSlideMenuPresented ? self.view.frame.width * 0.30 * -1 : self.view.frame.width * -1
-                         
-            print(slideMenuInPadding)
-            self.rightAnchorConstraint?.constant = slideMenuInPadding
-            
-        } completion: { (finished) in
-            print("Animation finished: \(finished)")
-            self.isSlideMenuPresented.toggle()
-        }
-         */
-
     }
     
     @objc func rightButtonTapped(_ sender: UIButton?) {

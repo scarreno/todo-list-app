@@ -7,4 +7,5 @@
 
 protocol HomeControllerDelegate {
     func handleMenuToggle()
+    func handleSignOut()
 }
